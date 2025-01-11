@@ -1,0 +1,96 @@
+//test program to turn the drone to the requested heading and move it forward by the requested distance
+void moveDrone ( int heading , int distance ) {
+	//arrange the heading
+	int currHeading = getHeading ( ) ;
+	if ( heading >= 0 && heading <= 359 ) {
+		while ( currHeading != heading ) {
+			if ( currHeading > heading ) {
+				turnLeft ( ) ;
+			}
+			if ( currHeading < heading ) {
+				turnRight ( ) ;
+			}
+			currHeading = getHeading ( ) ;
+		}	
+	}
+	//move forward, backward if distance is negative
+	if( distance == 0 ) {
+		stop ( ) ;
+	}
+	else {
+		if ( distance > 0 ) {
+			moveForward ( distance ) ;
+		}
+		else{
+			moveBackward ( distance ) ;
+		}
+	}	
+}
+
+//test program for spraying a field with the drone using moveDrone function from test1
+void sprayField ( int height , int width , int lineDistance ) {
+	//get the drone’s altitude to 4
+	int currAltitude = getAltitude ( ) ;
+     	if ( currAltitude != 4 ) {
+           if ( currAltitude > 4 ) {
+		moveDown ( currAltitude - 4 ) ;
+	   }
+	   else {
+	        moveUp ( 4 - currAltitude ) ;
+	   }
+      	}
+	
+	//move drone to the spraying line
+      	moveDrone ( 0 , lineDistance ) ;
+	moveDrone ( 90 , lineDistance ) ;
+
+        //spray the blue line
+        turnNozzleOn ( ) ;
+        moveDrone ( 0 , height ) ;
+        moveDrone ( 90 , width ) ;
+        moveDrone ( 180 , height ) ;
+        moveDrone ( 270 , width ) ;
+        turnNozzleOff ( ) ;
+
+        //move drone back to initial origin
+        moveDrone ( 180 , lineDistance ) ;
+        moveDrone ( 270 , lineDistance ) ;
+}
+
+//move the drone to shape an equailateral triangle, select rotation direction by input
+void eqTriangle ( int sideLength , int direction ) {
+     //checking if the input is valid or not
+     if ( direction != 0 && direction != 1 ) {
+     	print ( "This is not a valid direction! Give input 0 for left , 1 for right." ) ;
+        return ;
+     }
+     //moving the drone
+     int sides = 3 ;
+     moveDrone ( 0 , 0);
+     while ( sides > 0 ) {
+     	   moveForward ( sideLength );
+	   int turningDegree = 0;
+           while ( turningDegree < 120 ) {
+           	 if ( direction == 0 ) {
+                    turnLeft ( ) ;
+            	 } else {
+                   turnRight ( ) ;
+            	 }
+	   turningDegree = turningDegree + 1 ;
+        }
+        sides = sides - 1 ;
+    }
+}
+
+//test program to show how much distance the drone travels in a given duration
+void moveForDuration ( int duration )  {
+    float verticalSpeed = 0.25 ;
+    float horizontalSpeed = 0.75 ;
+    int verticalDistance = duration * verticalSpeed ;
+    int horizontalDistance = duration * horizontalSpeed ;
+    moveUp ( verticalDistance ) ;
+    moveForward ( horizontalDistance ) ;
+    stop ( ) ;
+    print ( "The drone flew " + verticalDistance + " up and " + horizontalDistance + " to the forward!" ) ;
+}
+
