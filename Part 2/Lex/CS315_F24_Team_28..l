@@ -1,0 +1,72 @@
+%option yylineno
+esc_seq \\[0\"\'\\nt]
+%%
+\/\/.*                       return (EOL_COMMENT);
+\,                           return (COMMA);
+\;                           return (SC);
+int                          return (INT_T);
+float                        return (FLOAT_T);
+char                         return (CHAR_T);
+string                       return (STRING_T);
+bool                         return (BOOL_T);
+if                           return (IF);
+else                         return (ELSE);
+else[ \t]+if    return (ELSE_IF); 
+true                         return (TRUE);
+false                        return (FALSE);
+while                        return (WHILE);
+for                          return(FOR);
+return                       return (RETURN);
+break                        return (BREAK);
+void                         return (VOID);
+print                        return (PRINT); 
+input                        return (INPUT);
+main                         return (MAIN);
+getHeading                   return (GET_HEADING);
+getAltitude                  return (GET_ALTITUDE);
+getTime                      return (GET_TIME);
+manageNozzle                 return (MANAGE_NOZZLE);
+verticalMovement             return (VERTICAL_MOVEMENT);
+moveUp                       return (MOVE_UP);
+moveDown                     return (MOVE_DOWN);
+stop                          return (STOP);
+turnNozzleOn                 return (TURN_NOZZLE_ON);
+turnNozzleOff                return (TURN_NOZZLE_OFF);
+horizontalMovement           return (HORIZONTAL_MOVEMENT);
+turnHeading                  return (TURN_HEADING);
+turnLeft                     return (TURN_LEFT);
+turnRight                    return (TURN_RIGHT);
+moveForward                  return (MOVE_FORWARD);
+moveBackward                 return (MOVE_BACKWARD);
+connectUrl                   return(CONNECT_URL);
+\&\&                          return (AND_OP);
+\|\|                          return (OR_OP);
+\=\=                          return (EQ);
+\!\=                          return (NEQ);
+\!                            return(NOT_OP);
+\<                            return (LT);
+\<\=                          return (LTE);
+\>                            return (GT);
+\>\=                          return (GTE);
+\(                            return (LP);
+\)                            return (RP);
+\{                            return (LCB);
+\}                            return (RCB);
+\=                            return (ASSIGN_OP);
+\+                            return (PLU_OP);
+\-                            return (MIN_OP);
+\+\+                            return(INCR_OP);
+\-\-                           return(DECR_OP);
+\*                            return (MUL_OP);
+\/                            return (DIV_OP);
+[+-]?[0-9]+                 return (INT);
+[+-]?[0-9]*[.][0-9]+        return (FLOAT);
+_[a-zA-Z][a-zA-Z0-9]*      return (BOOL_VAR_NAME);
+[a-zA-Z][a-zA-Z0-9]*      return (VAR_NAME);
+\"[^\"]*\"                  return (STRING);
+\'({esc_seq}|[^'\\])\'       return (CHAR);
+[ \t\n]                       ;
+%%
+int yywrap() {
+return 1;
+}
