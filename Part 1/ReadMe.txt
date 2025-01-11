@@ -1,1 +1,1 @@
-This project includes the BNF grammar of a programming language for drones and its Lexical Analyzer. Four test files are available.
+This project includes the BNF grammar of a programming language for drones and its Lexical Analyzer. Four tests are available in tests.txt.
